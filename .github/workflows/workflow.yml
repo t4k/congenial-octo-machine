@@ -20,14 +20,13 @@ jobs:
           import datetime
           import json
           import os
-          import platform; print(platform.python_version())
-          print("🐞",os.environ["GH_REPO_LIST"])
           repositories = json.loads(os.environ["GH_REPO_LIST"])
           msg = []
           for repository in repositories:
               # check if repository was created in the last 24 hours
-              if datetime.datetime.now(datetime.timezone.utc) - datetime.datetime.fromisoformat(
-                  repository["createdAt"]
+              if datetime.datetime.now(datetime.timezone.utc) - datetime.datetime.strptime(
+                  repository["createdAt"],
+                  "%Y-%m-%dT%H:%M:%SZ"
               ) < datetime.timedelta(days=1):
                   visibility = "private" if repository["isPrivate"] else "public"
                   msg.append(
@@ -35,7 +34,7 @@ jobs:
                           visibility,
                           repository["url"],
                           repository["nameWithOwner"],
-                          datetime.datetime.fromisoformat(repository["createdAt"]).strftime(
+                          datetime.datetime.strptime(repository["createdAt"],"%Y-%m-%dT%H:%M:%SZ").strftime(
                               "%A, %B %-d, %Y at %I:%M:%S %Z"
                           ),
                       )
