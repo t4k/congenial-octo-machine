@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  copy:
+  post:
     runs-on: ubuntu-latest
     steps:
       - id: gh_repo_list
@@ -17,7 +17,7 @@ jobs:
           import datetime
           import json
           import os
-          repositories = json.loads(GH_REPO_LIST)
+          repositories = json.loads($GH_REPO_LIST)
           msg = []
           for repository in repositories:
               # check if repository was created in the last 24 hours
