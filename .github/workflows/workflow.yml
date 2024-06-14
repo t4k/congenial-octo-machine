@@ -20,6 +20,7 @@ jobs:
           import datetime
           import json
           import os
+          import platform; print(platform.python_version())
           print("🐞",os.environ["GH_REPO_LIST"])
           repositories = json.loads(os.environ["GH_REPO_LIST"])
           msg = []
