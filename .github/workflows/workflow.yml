@@ -29,7 +29,7 @@ jobs:
               ) < datetime.timedelta(days=1):
                   visibility = "private" if repository["isPrivate"] else "public"
                   msg.append(
-                      "{} repository <{}|{}> added on {}\nsubscribe with `/github subscribe {}`\n".format(
+                      "{} repository <{}|{}> added on {}; subscribe with `/github subscribe {}`\n".format(
                           visibility,
                           repository["url"],
                           repository["nameWithOwner"],
