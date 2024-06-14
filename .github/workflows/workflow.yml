@@ -13,6 +13,8 @@ jobs:
         run: |
           gh repo list --json nameWithOwner,isPrivate,createdAt,url
           echo "GH_REPO_LIST=$(gh repo list --json nameWithOwner,isPrivate,createdAt,url)" >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ github.token }}
       - shell: python
         run: |
           import datetime
