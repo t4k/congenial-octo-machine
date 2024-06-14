@@ -17,8 +17,8 @@ jobs:
           import datetime
           import json
           import os
-          print(os.environ.get("GITHUB_ENV"))
-          repositories = json.loads(os.environ.get("GITHUB_ENV"))
+          print("🐞",os.environ["GH_REPO_LIST"])
+          repositories = json.loads(os.environ["GH_REPO_LIST"])
           msg = []
           for repository in repositories:
               # check if repository was created in the last 24 hours
