@@ -9,10 +9,39 @@ jobs:
   copy:
     runs-on: ubuntu-latest
     steps:
+      - id: gh_repo_list
+        run: |
+          echo "GH_REPO_LIST=$(gh repo list --json nameWithOwner,isPrivate,createdAt,url)" >> $GITHUB_ENV
+      - shell: python
+        run: |
+          import datetime
+          import json
+          import os
+          repositories = json.loads(GH_REPO_LIST)
+          msg = []
+          for repository in repositories:
+              # check if repository was created in the last 24 hours
+              if datetime.datetime.now(datetime.timezone.utc) - datetime.datetime.fromisoformat(
+                  repository["createdAt"]
+              ) < datetime.timedelta(days=1):
+                  visibility = "private" if repository["isPrivate"] else "public"
+                  msg.append(
+                      "{} repository <{}|{}> added on {}\n".format(
+                          visibility,
+                          repository["url"],
+                          repository["nameWithOwner"],
+                          datetime.datetime.fromisoformat(repository["createdAt"]).strftime(
+                              "%A, %B %-d, %Y at %I:%M:%S %Z"
+                          ),
+                      )
+                  )
+          if msg:
+              with open(os.environ["GITHUB_ENV"], "a") as f:
+                  print(f'MSG={"".join(msg)}', file=f)
       - id: slack
         uses: slackapi/slack-github-action@v1.26.0
         with:
           channel-id: ${{ vars.CHANNEL_ID }}
-          slack-message: "<https://en.wikipedia.org/wiki/Hello_World|Hello 👋 World 🌎>"
+          slack-message: "$MSG"
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
