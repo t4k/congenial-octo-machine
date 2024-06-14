@@ -13,6 +13,6 @@ jobs:
         uses: slackapi/slack-github-action@v1.26.0
         with:
           channel-id: ${{ vars.CHANNEL_ID }}
-          slack-message: "Hello 👋 World 🌎"
+          slack-message: "<https://en.wikipedia.org/wiki/Hello_World|Hello 👋 World 🌎>"
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
