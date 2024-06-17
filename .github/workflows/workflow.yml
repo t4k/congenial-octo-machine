@@ -48,7 +48,7 @@ jobs:
         run: |
           echo "steps.parse.outputs.MSG: ${{ steps.parse.outputs.MSG }}"
       - id: post
-        if: ${{ env.MSG != '⛔️' }}
+        if: ${{ false }}
         uses: slackapi/slack-github-action@v1.26.0
         with:
           channel-id: ${{ vars.CHANNEL_ID }}
