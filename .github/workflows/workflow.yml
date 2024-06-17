@@ -39,12 +39,9 @@ jobs:
                           repository["nameWithOwner"],
                       )
                   )
-          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-              if msg:
+          if msg:
+              with open(os.environ["GITHUB_ENV"], "a") as f:
                   print(f'MSG={"".join(msg)}', file=f)
-      - id: debug
-        run: |
-          echo "steps.parse.outputs.MSG: ${{ steps.parse.outputs.MSG }}"
       - id: post
         if: ${{ env.MSG }}
         uses: slackapi/slack-github-action@v1.26.0
@@ -52,5 +49,4 @@ jobs:
           channel-id: ${{ vars.CHANNEL_ID }}
           slack-message: ${{ env.MSG }}
         env:
-          MSG: ${{ steps.parse.outputs.MSG }}
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
