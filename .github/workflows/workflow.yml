@@ -44,6 +44,9 @@ jobs:
                   print(f'MSG={"".join(msg)}', file=f)
               else:
                   print('MSG="⛔️"', file=f)
+      - id: debug
+        run: |
+          echo "steps.parse.outputs.MSG: ${{ steps.parse.outputs.MSG }}"
       - id: post
         if: ${{ steps.parse.outputs.MSG != '⛔️' }}
         uses: slackapi/slack-github-action@v1.26.0
