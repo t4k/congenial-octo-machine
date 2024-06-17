@@ -42,13 +42,11 @@ jobs:
           with open(os.environ["GITHUB_OUTPUT"], "a") as f:
               if msg:
                   print(f'MSG={"".join(msg)}', file=f)
-              else:
-                  print('MSG="⛔️"', file=f)
       - id: debug
         run: |
           echo "steps.parse.outputs.MSG: ${{ steps.parse.outputs.MSG }}"
       - id: post
-        if: ${{ false }}
+        if: ${{ env.MSG }}
         uses: slackapi/slack-github-action@v1.26.0
         with:
           channel-id: ${{ vars.CHANNEL_ID }}
